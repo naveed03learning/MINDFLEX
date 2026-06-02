@@ -16,15 +16,15 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen>
     with SingleTickerProviderStateMixin {
+  bool _quizSaved = false; // ✅ ADD HERE
+
   // Data
   late String _topic;
   late List<QuizQuestion> _questions;
   int _currentIndex = 0;
-
+  int _bestStreak = 0;
   // State
   int _xp = 0;
-  int _streak = 0;
-  int _bestStreak = 0;
   int _correctCount = 0;
   bool _answered = false;
   bool _hintUsed = false;
@@ -41,7 +41,7 @@ class _QuizScreenState extends State<QuizScreen>
   late AnimationController _cardAnimCtrl;
   late Animation<double> _cardFade;
   late Animation<Offset> _cardSlide;
-
+//ignore: unused_field
   static const _motivations = [
     "Keep the momentum going!",
     "Your neural pathways are firing!",
@@ -76,7 +76,8 @@ class _QuizScreenState extends State<QuizScreen>
       _topic = widget.forcedTopic!;
     } else {
       final interests = StorageService.getInterests();
-      final valid = interests.where((i) => QuizData.allQuestions.containsKey(i)).toList();
+      final valid =
+          interests.where((i) => QuizData.allQuestions.containsKey(i)).toList();
       if (valid.isNotEmpty) {
         valid.shuffle();
         _topic = valid.first;
@@ -114,7 +115,6 @@ class _QuizScreenState extends State<QuizScreen>
     if (_answered) return;
     setState(() {
       _answered = true;
-      _streak = 0;
       _selectedOption = -1; // indicates timeout
     });
   }
@@ -127,14 +127,10 @@ class _QuizScreenState extends State<QuizScreen>
     setState(() {
       _answered = true;
       _selectedOption = index;
+
       if (isCorrect) {
-        final earned = _hintUsed ? (q.xp * 0.7).round() : q.xp;
-        _xp += earned;
-        _streak++;
+        _xp += 2;
         _correctCount++;
-        if (_streak > _bestStreak) _bestStreak = _streak;
-      } else {
-        _streak = 0;
       }
     });
   }
@@ -151,7 +147,11 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   void _finishQuiz() async {
+    if (_quizSaved) return; // ✅ STOP DUPLICATE CALLS
+    _quizSaved = true;
+
     _timer?.cancel();
+
     await StorageService.saveQuizResult(
       topic: _topic,
       earnedXP: _xp,
@@ -159,6 +159,11 @@ class _QuizScreenState extends State<QuizScreen>
       totalQuestions: _questions.length,
       sessionBestStreak: _bestStreak,
     );
+    if (mounted) {
+      setState(() {});
+      _showResults = true;
+    }
+
     if (mounted) setState(() => _showResults = true);
   }
 
@@ -204,7 +209,8 @@ class _QuizScreenState extends State<QuizScreen>
               children: [
                 // ── Header ──────────────────────────────────
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Row(
                     children: [
                       IconButton(
@@ -213,7 +219,8 @@ class _QuizScreenState extends State<QuizScreen>
                         onPressed: () => Navigator.pop(context),
                       ),
                       const Spacer(),
-                      StreakChip(streak: _streak),
+                      // Daily streak (days with 20+ answers)
+                      StreakChip(streak: StorageService.getDailyStreak()),
                       const SizedBox(width: 8),
                       XPChip(xp: _xp),
                       const SizedBox(width: 8),
@@ -255,7 +262,8 @@ class _QuizScreenState extends State<QuizScreen>
                         child: LinearProgressIndicator(
                           value: progress,
                           backgroundColor: AppColors.surfaceContainerHighest,
-                          valueColor: const AlwaysStoppedAnimation(AppColors.primaryDim),
+                          valueColor: const AlwaysStoppedAnimation(
+                              AppColors.primaryDim),
                           minHeight: 5,
                         ),
                       ),
@@ -309,11 +317,12 @@ class _QuizScreenState extends State<QuizScreen>
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 14, vertical: 10),
                                       decoration: BoxDecoration(
-                                        color: AppColors.tertiary.withOpacity(0.08),
+                                        color: AppColors.tertiary
+                                            .withOpacity(0.08),
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
-                                          color:
-                                              AppColors.tertiary.withOpacity(0.2),
+                                          color: AppColors.tertiary
+                                              .withOpacity(0.2),
                                         ),
                                       ),
                                       child: Text(
@@ -356,7 +365,8 @@ class _QuizScreenState extends State<QuizScreen>
                                     Text(
                                       'Use Hint',
                                       style: GoogleFonts.manrope(
-                                        color: AppColors.tertiary.withOpacity(0.7),
+                                        color:
+                                            AppColors.tertiary.withOpacity(0.7),
                                         fontSize: 13,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -365,7 +375,8 @@ class _QuizScreenState extends State<QuizScreen>
                                     Text(
                                       '(-5 XP)',
                                       style: GoogleFonts.manrope(
-                                        color: AppColors.tertiary.withOpacity(0.4),
+                                        color:
+                                            AppColors.tertiary.withOpacity(0.4),
                                         fontSize: 11,
                                       ),
                                     ),
@@ -430,7 +441,11 @@ class _QuizScreenState extends State<QuizScreen>
   Widget _buildResultsScreen() {
     final total = _questions.length;
     final accuracy = total > 0 ? (_correctCount / total * 100).round() : 0;
-    final emoji = accuracy == 100 ? '🏆' : accuracy >= 60 ? '🧠' : '💪';
+    final emoji = accuracy == 100
+        ? '🏆'
+        : accuracy >= 60
+            ? '🧠'
+            : '💪';
     final title = accuracy == 100
         ? 'Neural Mastery!'
         : accuracy >= 60
@@ -484,22 +499,17 @@ class _QuizScreenState extends State<QuizScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             _ResultStat(
-                                label: 'SCORE',
-                                value: '$_correctCount/$total'),
+                                label: 'SCORE', value: '$_correctCount/$total'),
                             Container(
                               width: 1,
                               height: 48,
-                              color:
-                                  AppColors.outlineVariant.withOpacity(0.3),
+                              color: AppColors.outlineVariant.withOpacity(0.3),
                             ),
-                            _ResultStat(
-                                label: 'ACCURACY',
-                                value: '$accuracy%'),
+                            _ResultStat(label: 'ACCURACY', value: '$accuracy%'),
                             Container(
                               width: 1,
                               height: 48,
-                              color:
-                                  AppColors.outlineVariant.withOpacity(0.3),
+                              color: AppColors.outlineVariant.withOpacity(0.3),
                             ),
                             _ResultStat(
                                 label: 'XP EARNED',
@@ -515,12 +525,10 @@ class _QuizScreenState extends State<QuizScreen>
                             Container(
                               width: 1,
                               height: 48,
-                              color:
-                                  AppColors.outlineVariant.withOpacity(0.3),
+                              color: AppColors.outlineVariant.withOpacity(0.3),
                             ),
                             _ResultStat(
-                                label: 'BEST STREAK',
-                                value: '🔥 $_bestStreak'),
+                                label: 'BEST STREAK', value: '🔥 $_bestStreak'),
                           ],
                         ),
                       ],
@@ -584,8 +592,7 @@ class _QuizScreenState extends State<QuizScreen>
                               QuizScreen(forcedTopic: widget.forcedTopic),
                           transitionsBuilder: (_, anim, __, child) =>
                               FadeTransition(opacity: anim, child: child),
-                          transitionDuration:
-                              const Duration(milliseconds: 300),
+                          transitionDuration: const Duration(milliseconds: 300),
                         ),
                       );
                     },
@@ -760,9 +767,7 @@ class _RingPainter extends CustomPainter {
   final Color color;
 
   _RingPainter(
-      {required this.offset,
-      required this.circumference,
-      required this.color});
+      {required this.offset, required this.circumference, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -824,9 +829,8 @@ class _FeedbackBanner extends StatelessWidget {
         : isCorrect
             ? '✓ Correct!'
             : '✗ Incorrect';
-    final desc = timedOut || !isCorrect
-        ? 'Correct answer: $correctAnswer'
-        : msgs.first;
+    final desc =
+        timedOut || !isCorrect ? 'Correct answer: $correctAnswer' : msgs.first;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
@@ -847,7 +851,8 @@ class _FeedbackBanner extends StatelessWidget {
             (timedOut || !isCorrect)
                 ? Icons.cancel_rounded
                 : Icons.check_circle_rounded,
-            color: (timedOut || !isCorrect) ? AppColors.wrong : AppColors.correct,
+            color:
+                (timedOut || !isCorrect) ? AppColors.wrong : AppColors.correct,
             size: 26,
           ),
           const SizedBox(width: 14),
@@ -858,7 +863,9 @@ class _FeedbackBanner extends StatelessWidget {
                 Text(
                   title,
                   style: GoogleFonts.spaceGrotesk(
-                    color: (timedOut || !isCorrect) ? AppColors.wrong : AppColors.correct,
+                    color: (timedOut || !isCorrect)
+                        ? AppColors.wrong
+                        : AppColors.correct,
                     fontWeight: FontWeight.w700,
                     fontSize: 15,
                   ),

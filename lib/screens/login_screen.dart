@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../theme.dart';
-import '../data/storage_service.dart';
 import '../widgets/common_widgets.dart';
 import 'interests_screen.dart';
+import 'signup_screen.dart';
+import '../data/storage_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,43 +15,83 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _usernameCtrl = TextEditingController();
+  final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
   bool _showPassword = false;
   bool _isLoading = false;
 
   void _authenticate() async {
-    final username = _usernameCtrl.text.trim();
+    if (_isLoading) return;
+
+    final email = _emailCtrl.text.trim();
     final password = _passwordCtrl.text.trim();
 
-    if (username.isEmpty || password.isEmpty) {
+    if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Please enter your username and password.',
+            'Please enter your email and password.',
             style: GoogleFonts.manrope(color: Colors.white),
           ),
           backgroundColor: AppColors.errorDim,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       );
       return;
     }
 
     setState(() => _isLoading = true);
-    await StorageService.setUsername(username);
+
+    final supabase = Supabase.instance.client;
+
+    try {
+      final res = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = res.user;
+
+      if (user != null) {
+        // 🔥 Fetch user data (optional, for future use)
+        final data =
+            await supabase.from('users').select().eq('id', user.id).single();
+
+        await StorageService.setUsername(data['username']);
+
+        print("USER DATA 👉 $data");
+
+        await StorageService.syncFromSupabase();
+
+        if (!mounted) return;
+
+        // ✅ Navigate ONLY after success
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const InterestsScreen()),
+        );
+      }
+    } catch (e) {
+      print("LOGIN ERROR 👉 $e");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Invalid email or password',
+            style: GoogleFonts.manrope(color: Colors.white),
+          ),
+          backgroundColor: AppColors.errorDim,
+        ),
+      );
+    }
+
     if (!mounted) return;
     setState(() => _isLoading = false);
+  }
 
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const InterestsScreen(),
-        transitionsBuilder: (_, anim, __, child) =>
-            FadeTransition(opacity: anim, child: child),
-        transitionDuration: const Duration(milliseconds: 400),
-      ),
-    );
+  @override
+  void dispose() {
+    _emailCtrl.dispose();
+    _passwordCtrl.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,7 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: const Color(0xFF1B1B1E),
       body: Stack(
         children: [
-          // Ambient glows
           Positioned(
             top: -80,
             right: -80,
@@ -89,15 +130,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
               child: Column(
                 children: [
                   const SizedBox(height: 48),
-
-                  // Title
                   Text(
                     'MINDFLEX',
                     style: GoogleFonts.spaceGrotesk(
@@ -118,19 +156,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 56),
-
-                  // Username field
                   _buildLabel('IDENTIFICATION'),
                   const SizedBox(height: 8),
                   _GlassInput(
-                    controller: _usernameCtrl,
-                    hint: 'Username',
-                    prefixIcon: Icons.person_outline_rounded,
+                    controller: _emailCtrl,
+                    hint: 'Email',
+                    prefixIcon: Icons.email_outlined,
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 24),
-
-                  // Password field
                   _buildLabel('SECURITY KEY'),
                   const SizedBox(height: 8),
                   _GlassInput(
@@ -153,8 +187,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 36),
-
-                  // Authenticate button
                   _isLoading
                       ? const CircularProgressIndicator(
                           color: AppColors.primary)
@@ -163,8 +195,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: _authenticate,
                         ),
                   const SizedBox(height: 24),
-
-                  // Forgot / Sign Up
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -177,12 +207,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: AppColors.outlineVariant,
                         ),
                       ),
-                      _LinkText('Sign Up'),
+                      _LinkText('Sign Up', onTap: () {
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => const SignupScreen(),
+                            transitionsBuilder: (_, anim, __, child) =>
+                                FadeTransition(opacity: anim, child: child),
+                            transitionDuration:
+                                const Duration(milliseconds: 400),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                   const SizedBox(height: 64),
-
-                  // Biometric icons
                   Opacity(
                     opacity: 0.4,
                     child: Row(
@@ -294,17 +332,21 @@ class _GlassInput extends StatelessWidget {
 
 class _LinkText extends StatelessWidget {
   final String text;
-  const _LinkText(this.text);
+  final VoidCallback? onTap;
+  const _LinkText(this.text, {this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text.toUpperCase(),
-      style: GoogleFonts.manrope(
-        color: AppColors.onSurfaceVariant,
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 1.5,
+    return GestureDetector(
+      onTap: onTap,
+      child: Text(
+        text.toUpperCase(),
+        style: GoogleFonts.manrope(
+          color: AppColors.onSurfaceVariant,
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.5,
+        ),
       ),
     );
   }

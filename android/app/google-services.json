@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "772556025618",
+    "project_id": "mindflex-11164",
+    "storage_bucket": "mindflex-11164.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772556025618:android:4cb8f732cd1381331acdcb",
+        "android_client_info": {
+          "package_name": "com.example.mindflex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBULfuQ2WDaiK_RCuhlNMXqnu29dAmYs3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

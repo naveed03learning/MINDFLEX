@@ -138,8 +138,8 @@ class _SplashScreenState extends State<SplashScreen>
                 children: [
                   // Logo circle
                   Container(
-                    width: 128,
-                    height: 128,
+                    width: 200,
+                    height: 200,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppColors.surfaceContainerHighest,
@@ -160,7 +160,7 @@ class _SplashScreenState extends State<SplashScreen>
                           child: Icon(
                             Icons.psychology_rounded,
                             color: AppColors.primaryDim,
-                            size: 72,
+                            size: 120,
                           ),
                         ),
                         Positioned(

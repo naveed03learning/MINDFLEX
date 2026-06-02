@@ -1,3 +1,5 @@
+// ignore_for_file: duplicate_ignore, prefer_const_constructors, unnecessary_const
+
 class QuizQuestion {
   final String question;
   final List<String> options;
@@ -16,197 +18,223 @@ class QuizQuestion {
   });
 }
 
-class TopicData {
-  final String icon;
-  final String color;
-  final List<QuizQuestion> questions;
-
-  const TopicData({
-    required this.icon,
-    required this.color,
-    required this.questions,
-  });
-}
-
 class QuizData {
-  static const Map<String, String> topicIcons = {
-    'Riddles': '🧩',
-    'Memory': '🧠',
-    'Logic': '🔗',
-    'Lateral Thinking': '💡',
-  };
-
-  static const Map<String, String> topicColors = {
-    'Riddles': '#FF8D8E',
-    'Memory': '#FE81A3',
-    'Logic': '#FF8D8E',
-    'Lateral Thinking': '#C9A1FF',
-  };
-
   static const Map<String, List<QuizQuestion>> allQuestions = {
     'Riddles': [
-      QuizQuestion(
-        question: "The more you take, the more you leave behind. What am I?",
-        options: ["Time", "Memories", "Footsteps", "Breath"],
-        answerIndex: 2,
-        hint: "Think about physical movement.",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "I have cities but no houses, mountains but no trees, water but no fish. What am I?",
-        options: ["A painting", "A map", "A mirror", "A dream"],
-        answerIndex: 1,
-        hint: "It's something you use for navigation.",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "What can run but never walks, has a mouth but never talks?",
-        options: ["A river", "A clock", "A train", "The wind"],
+      const QuizQuestion(
+        question: 'What has keys but can\'t open locks?',
+        options: ['A piano', 'A map', 'A book', 'A door'],
         answerIndex: 0,
-        hint: "It's found in nature and flows downhill.",
-        difficulty: "Easy",
+        hint: 'It\'s a musical instrument.',
+        difficulty: 'Easy',
         xp: 10,
       ),
-      QuizQuestion(
-        question: "I am not alive but I can grow. I don't have lungs but I need air. What am I?",
-        options: ["A storm", "A plant", "Fire", "A wave"],
-        answerIndex: 2,
-        hint: "It's orange and hot.",
-        difficulty: "Medium",
+      const QuizQuestion(
+        question:
+            'I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?',
+        options: ['An echo', 'A ghost', 'A shadow', 'A dream'],
+        answerIndex: 0,
+        hint: 'You often hear me in mountains.',
+        difficulty: 'Easy',
+        xp: 10,
+      ),
+      const QuizQuestion(
+        question: 'The more you take, the more you leave behind. What am I?',
+        options: ['Time', 'Footsteps', 'Money', 'Breath'],
+        answerIndex: 1,
+        hint: 'Think about walking on a sandy beach.',
+        difficulty: 'Easy',
+        xp: 10,
+      ),
+      const QuizQuestion(
+        question:
+            'I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?',
+        options: ['A map', 'A globe', 'A painting', 'A dream'],
+        answerIndex: 0,
+        hint: 'You look at me to find your way.',
+        difficulty: 'Medium',
+        xp: 15,
+      ),
+      const QuizQuestion(
+        question:
+            'What can you hold in your left hand but never in your right?',
+        options: ['Your elbow', 'Your right hand', 'A pen', 'Your heart'],
+        answerIndex: 1,
+        hint: 'Think about your own body.',
+        difficulty: 'Medium',
         xp: 15,
       ),
     ],
     'Memory': [
-      QuizQuestion(
-        question: "Study this sequence: 7, 3, 9, 1, 5. What is the 3rd number?",
-        options: ["3", "7", "9", "1"],
+      const QuizQuestion(
+        question:
+            'Which memory technique involves associating new information with vivid mental images?',
+        options: [
+          'Chunking',
+          'Method of loci',
+          'Peg system',
+          'Spaced repetition'
+        ],
         answerIndex: 2,
-        hint: "Start from the first: 7 is 1st, 3 is 2nd...",
-        difficulty: "Easy",
-        xp: 10,
+        hint: 'Uses mental "pegs" to hang information.',
+        difficulty: 'Hard',
+        xp: 20,
       ),
-      QuizQuestion(
-        question: "A grocery list: Milk, Eggs, Bread, Butter, Cheese. What is the 4th item?",
-        options: ["Bread", "Eggs", "Cheese", "Butter"],
-        answerIndex: 3,
-        hint: "Count: Milk(1), Eggs(2), Bread(3)...",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "Colors in order: Red, Blue, Green, Yellow, Purple. Which was shown 2nd?",
-        options: ["Green", "Blue", "Red", "Yellow"],
+      const QuizQuestion(
+        question: 'What is the average short-term memory capacity in items?',
+        options: ['5 ± 2', '7 ± 2', '9 ± 2', '11 ± 2'],
         answerIndex: 1,
-        hint: "Red came first in the sequence.",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "Remember: Apple, Train, Cloud, Mirror, River. How many items were in the list?",
-        options: ["4", "6", "5", "3"],
-        answerIndex: 2,
-        hint: "Count carefully: Apple... Train... Cloud...",
-        difficulty: "Medium",
+        hint: 'Known as Miller\'s Law.',
+        difficulty: 'Medium',
         xp: 15,
       ),
-      QuizQuestion(
-        question: "Sequence: 4, 8, 15, 16, 23, 42 — sum of the 1st and last numbers?",
-        options: ["44", "46", "48", "42"],
+      const QuizQuestion(
+        question: 'Which type of memory lasts only a fraction of a second?',
+        options: ['Short-term', 'Long-term', 'Sensory', 'Working'],
+        answerIndex: 2,
+        hint: 'Iconic and echoic are types of this.',
+        difficulty: 'Medium',
+        xp: 15,
+      ),
+      const QuizQuestion(
+        question:
+            'The "testing effect" shows that the best way to retain information is to:',
+        options: [
+          'Read repeatedly',
+          'Highlight text',
+          'Active recall practice',
+          'Listen to recordings'
+        ],
+        answerIndex: 2,
+        hint: 'Retrieval practice strengthens memory.',
+        difficulty: 'Hard',
+        xp: 20,
+      ),
+      const QuizQuestion(
+        question: 'What is chunking in memory?',
+        options: [
+          'Memorizing in chunks',
+          'Grouping info into meaningful units',
+          'Breaking down complex info',
+          'Memorizing step by step'
+        ],
         answerIndex: 1,
-        hint: "First is 4, last is 42.",
-        difficulty: "Hard",
-        xp: 25,
+        hint: 'Like grouping phone numbers.',
+        difficulty: 'Easy',
+        xp: 10,
       ),
     ],
     'Logic': [
-      QuizQuestion(
-        question: "All cats are animals. All animals need water. Do cats need water?",
-        options: ["No", "Maybe", "Yes", "Impossible to tell"],
-        answerIndex: 2,
-        hint: "Follow the chain of logic step by step.",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "Complete the sequence: 2, 4, 8, 16, __",
-        options: ["24", "30", "32", "28"],
-        answerIndex: 2,
-        hint: "Each number is multiplied by something.",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "If A > B and B > C, which statement is definitely true?",
-        options: ["C > A", "A > C", "B > A", "C = A"],
-        answerIndex: 1,
-        hint: "If A is bigger than B, and B is bigger than C...",
-        difficulty: "Medium",
-        xp: 15,
-      ),
-      QuizQuestion(
-        question: "Find the next in the Fibonacci sequence: 1, 1, 2, 3, 5, 8, __",
-        options: ["11", "12", "14", "13"],
+      const QuizQuestion(
+        question:
+            'If all roses are flowers and some flowers fade quickly, which statement is definitely true?',
+        options: [
+          'All roses fade quickly',
+          'Some roses fade quickly',
+          'No roses fade quickly',
+          'Cannot be determined'
+        ],
         answerIndex: 3,
-        hint: "Add the last two numbers together.",
-        difficulty: "Medium",
+        hint: 'This is a syllogism problem.',
+        difficulty: 'Hard',
+        xp: 20,
+      ),
+      const QuizQuestion(
+        question:
+            'What is the next number in the sequence: 2, 6, 12, 20, 30, ?',
+        options: ['40', '42', '44', '46'],
+        answerIndex: 1,
+        hint: 'Look at the differences between numbers.',
+        difficulty: 'Medium',
         xp: 15,
       ),
-      QuizQuestion(
-        question: "If no fish are mammals and all dolphins are mammals, are dolphins fish?",
-        options: ["Yes", "Maybe", "No", "Sometimes"],
+      const QuizQuestion(
+        question:
+            'If A is taller than B, B is taller than C, and C is taller than D, who is the shortest?',
+        options: ['A', 'B', 'C', 'D'],
+        answerIndex: 3,
+        hint: 'Work from tallest to shortest.',
+        difficulty: 'Easy',
+        xp: 10,
+      ),
+      const QuizQuestion(
+        question: 'Which logical fallacy assumes what needs to be proven?',
+        options: [
+          'Straw man',
+          'Ad hominem',
+          'Begging the question',
+          'False dilemma'
+        ],
         answerIndex: 2,
-        hint: "Use the two given facts together.",
-        difficulty: "Medium",
+        hint: 'Circular reasoning in disguise.',
+        difficulty: 'Hard',
+        xp: 20,
+      ),
+      const QuizQuestion(
+        question:
+            'If all birds can fly and a penguin is a bird, can a penguin fly?',
+        options: ['Yes', 'No', 'Sometimes', 'Cannot be determined'],
+        answerIndex: 1,
+        hint: 'Check the validity of the premise.',
+        difficulty: 'Medium',
         xp: 15,
       ),
     ],
     'Lateral Thinking': [
-      QuizQuestion(
-        question: "How can you drop a raw egg onto a concrete floor without cracking it?",
-        options: ["Use a soft egg", "Wrap it in cloth", "Concrete floors don't crack easily", "Drop it very slowly"],
-        answerIndex: 2,
-        hint: "The question says the egg won't crack — think about WHAT won't crack.",
-        difficulty: "Medium",
-        xp: 20,
-      ),
-      QuizQuestion(
-        question: "How many months have 28 days?",
-        options: ["1", "2", "12", "6"],
-        answerIndex: 2,
-        hint: "Every month has AT LEAST 28 days.",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "A woman shoots her husband. Minutes later, they dine together. How?",
-        options: ["She missed", "It was a dream", "She's a photographer", "He survived"],
-        answerIndex: 2,
-        hint: "Think about non-lethal ways to 'shoot' someone.",
-        difficulty: "Medium",
-        xp: 20,
-      ),
-      QuizQuestion(
-        question: "A rooster lays an egg on top of a barn roof. Which way does the egg roll?",
-        options: ["Left", "Right", "Towards the wind", "Roosters don't lay eggs"],
-        answerIndex: 3,
-        hint: "Think about who is doing the laying.",
-        difficulty: "Easy",
-        xp: 10,
-      ),
-      QuizQuestion(
-        question: "You have two ropes each taking 1 hour to burn. How do you measure exactly 45 minutes?",
+      const QuizQuestion(
+        question:
+            'A man pushes his car to a hotel and pays the owner. What happened?',
         options: [
-          "Light rope 1 from both ends + second from one end simultaneously",
-          "Cut the ropes in half",
-          "Burn them at different times",
-          "Use a stopwatch instead"
+          'He lost his money',
+          'He played monopoly',
+          'He was at the beach',
+          'He needed a place to stay'
         ],
-        answerIndex: 0,
-        hint: "Burning from both ends halves the time.",
-        difficulty: "Hard",
-        xp: 30,
+        answerIndex: 1,
+        hint: 'Think of a popular board game.',
+        difficulty: 'Medium',
+        xp: 15,
+      ),
+      const QuizQuestion(
+        question:
+            'A man walks into a bar and asks for water. The bartender points a gun at him. Why does the man say "thank you" and leave?',
+        options: [
+          'He was scared',
+          'The bartender saved his life',
+          'It was a joke',
+          'He got what he wanted'
+        ],
+        answerIndex: 1,
+        hint: 'What could water from a gun mean?',
+        difficulty: 'Hard',
+        xp: 20,
+      ),
+      const QuizQuestion(
+        question:
+            'A woman has six daughters and each daughter has one brother. How many children does she have?',
+        options: ['6', '7', '12', '13'],
+        answerIndex: 1,
+        hint: 'Think about shared family members.',
+        difficulty: 'Medium',
+        xp: 15,
+      ),
+      const QuizQuestion(
+        question:
+            'A doctor gives you 3 pills and tells you to take one every half hour. How long will they last?',
+        options: ['1 hour', '1.5 hours', '2 hours', '3 hours'],
+        answerIndex: 1,
+        hint: 'When do you take the first one?',
+        difficulty: 'Easy',
+        xp: 10,
+      ),
+      const QuizQuestion(
+        question:
+            'An electric train is traveling south at 100 mph. The wind is blowing west at 50 mph. Which direction does the smoke blow?',
+        options: ['South', 'West', 'East', 'There is no smoke'],
+        answerIndex: 3,
+        hint: 'What type of train is it?',
+        difficulty: 'Medium',
+        xp: 15,
       ),
     ],
   };

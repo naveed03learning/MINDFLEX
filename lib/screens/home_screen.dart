@@ -90,7 +90,9 @@ class _NavItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? AppColors.primary.withOpacity(0.12) : Colors.transparent,
+          color: selected
+              ? AppColors.primary.withOpacity(0.12)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(100),
         ),
         child: Row(
@@ -216,11 +218,15 @@ class _HomeTabState extends State<_HomeTab> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     gradient: const LinearGradient(
-                                      colors: [AppColors.primary, AppColors.primaryDim],
+                                      colors: [
+                                        AppColors.primary,
+                                        AppColors.primaryDim
+                                      ],
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.primaryDim.withOpacity(0.4),
+                                        color: AppColors.primaryDim
+                                            .withOpacity(0.4),
                                         blurRadius: 16,
                                       ),
                                     ],
@@ -261,7 +267,8 @@ class _HomeTabState extends State<_HomeTab> {
                                 value: xpProgress,
                                 backgroundColor:
                                     AppColors.outlineVariant.withOpacity(0.3),
-                                valueColor: const AlwaysStoppedAnimation(AppColors.primaryDim),
+                                valueColor: const AlwaysStoppedAnimation(
+                                    AppColors.primaryDim),
                                 minHeight: 6,
                               ),
                             ),
@@ -279,7 +286,8 @@ class _HomeTabState extends State<_HomeTab> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('🔥', style: TextStyle(fontSize: 22)),
+                                  const Text('🔥',
+                                      style: TextStyle(fontSize: 22)),
                                   const SizedBox(height: 8),
                                   Text(
                                     'STREAK',
@@ -385,21 +393,24 @@ class _HomeTabState extends State<_HomeTab> {
                       NeuralButton(
                         label: '⚡  Start Training',
                         onTap: () {
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              pageBuilder: (_, __, ___) => const QuizScreen(),
-                              transitionsBuilder: (_, anim, __, child) =>
-                                  SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(1, 0),
-                                  end: Offset.zero,
-                                ).animate(CurvedAnimation(
-                                    parent: anim,
-                                    curve: Curves.easeOutCubic)),
-                                child: child,
-                              ),
-                            ),
-                          ).then((_) => setState(() {}));
+                          Navigator.of(context)
+                              .push(
+                                PageRouteBuilder(
+                                  pageBuilder: (_, __, ___) =>
+                                      const QuizScreen(),
+                                  transitionsBuilder: (_, anim, __, child) =>
+                                      SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(CurvedAnimation(
+                                        parent: anim,
+                                        curve: Curves.easeOutCubic)),
+                                    child: child,
+                                  ),
+                                ),
+                              )
+                              .then((_) => setState(() {}));
                         },
                       ),
                       const SizedBox(height: 24),
@@ -441,22 +452,24 @@ class _HomeTabState extends State<_HomeTab> {
                       final score = topicScores[topic];
                       return GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              pageBuilder: (_, __, ___) =>
-                                  QuizScreen(forcedTopic: topic),
-                              transitionsBuilder: (_, anim, __, child) =>
-                                  SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(1, 0),
-                                  end: Offset.zero,
-                                ).animate(CurvedAnimation(
-                                    parent: anim,
-                                    curve: Curves.easeOutCubic)),
-                                child: child,
-                              ),
-                            ),
-                          ).then((_) => setState(() {}));
+                          Navigator.of(context)
+                              .push(
+                                PageRouteBuilder(
+                                  pageBuilder: (_, __, ___) =>
+                                      QuizScreen(forcedTopic: topic),
+                                  transitionsBuilder: (_, anim, __, child) =>
+                                      SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(CurvedAnimation(
+                                        parent: anim,
+                                        curve: Curves.easeOutCubic)),
+                                    child: child,
+                                  ),
+                                ),
+                              )
+                              .then((_) => setState(() {}));
                         },
                         child: GlassCard(
                           padding: const EdgeInsets.all(16),

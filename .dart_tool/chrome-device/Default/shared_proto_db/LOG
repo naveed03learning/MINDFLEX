@@ -1,2 +1,21 @@
-2026/04/01-12:20:27.731 4b88 Creating DB C:\Users\crazi\AppData\Local\Temp\flutter_tools.b5f47256\flutter_tools_chrome_device.ee692a31\Default\shared_proto_db since it was missing.
-2026/04/01-12:20:27.740 4b88 Reusing MANIFEST C:\Users\crazi\AppData\Local\Temp\flutter_tools.b5f47256\flutter_tools_chrome_device.ee692a31\Default\shared_proto_db/MANIFEST-000001
+2026/05/25-04:00:28.476 2e10 Reusing MANIFEST C:\Users\crazi\AppData\Local\Temp\flutter_tools.a9374026\flutter_tools_chrome_device.90b39959\Default\shared_proto_db/MANIFEST-000001
+2026/05/25-04:00:28.490 2e10 Recovering log #32
+2026/05/25-04:00:28.492 2e10 Reusing old log C:\Users\crazi\AppData\Local\Temp\flutter_tools.a9374026\flutter_tools_chrome_device.90b39959\Default\shared_proto_db/000032.log 
+2026/05/25-04:00:28.495 2e10 Delete type=0 #3
+2026/05/25-04:00:28.496 2e10 Delete type=0 #4
+2026/05/25-04:00:28.496 2e10 Delete type=0 #7
+2026/05/25-04:00:28.497 2e10 Delete type=2 #8
+2026/05/25-04:00:28.497 2e10 Delete type=0 #10
+2026/05/25-04:00:28.497 2e10 Delete type=2 #11
+2026/05/25-04:00:28.497 2e10 Delete type=0 #13
+2026/05/25-04:00:28.498 2e10 Delete type=2 #14
+2026/05/25-04:00:28.501 2e10 Delete type=0 #16
+2026/05/25-04:00:28.501 2e10 Delete type=2 #17
+2026/05/25-04:00:28.501 2e10 Delete type=0 #19
+2026/05/25-04:00:28.501 2e10 Delete type=2 #21
+2026/05/25-04:00:28.501 2e10 Delete type=0 #23
+2026/05/25-04:00:28.501 2e10 Delete type=2 #24
+2026/05/25-04:00:28.501 2e10 Delete type=0 #26
+2026/05/25-04:00:28.501 2e10 Delete type=2 #27
+2026/05/25-04:00:28.502 2e10 Delete type=0 #29
+2026/05/25-04:00:28.502 2e10 Delete type=2 #30
